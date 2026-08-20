@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline — deal tracker</title>
+  <meta name="description" content="Pipeline: a lightweight sales deal tracker. Drag deals through your funnel; everything saves in your browser.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div>
+      <h1>Pipeline</h1>
+      <p class="tagline">A lightweight deal tracker. Your data stays in your browser.</p>
+    </div>
+    <div class="topbar-actions">
+      <span class="pipeline-total" id="pipelineTotal"></span>
+      <button class="btn btn-primary" id="addDealBtn" type="button">New deal</button>
+    </div>
+  </header>
+
+  <main class="board" id="board" aria-label="Sales pipeline board"></main>
+
+  <footer class="foot">
+    <p>
+      Demo data is fictional.
+      <button class="linklike" id="resetBtn" type="button">Reset demo data</button>
+    </p>
+    <p>Built by <a href="https://grahamconnell.net">Graham Connell</a> with Claude Code ·
+      <a href="https://github.com/GGraham1882/pipeline-board">Source on GitHub</a></p>
+  </footer>
+
+  <dialog id="dealDialog">
+    <form method="dialog" id="dealForm">
+      <h2 id="dialogTitle">New deal</h2>
+      <label>
+        Company
+        <input type="text" name="company" required maxlength="60" autocomplete="off">
+      </label>
+      <label>
+        Contact
+        <input type="text" name="contact" maxlength="60" autocomplete="off">
+      </label>
+      <label>
+        Deal value (USD)
+        <input type="number" name="value" min="0" step="100" inputmode="numeric">
+      </label>
+      <label>
+        Stage
+        <select name="stage" id="stageSelect"></select>
+      </label>
+      <label>
+        Notes
+        <textarea name="notes" rows="3" maxlength="400"></textarea>
+      </label>
+      <div class="dialog-actions">
+        <button class="btn btn-danger" type="button" id="deleteBtn" hidden>Delete</button>
+        <span class="dialog-spacer"></span>
+        <button class="btn" type="button" id="cancelBtn">Cancel</button>
+        <button class="btn btn-primary" type="submit" id="saveBtn">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
