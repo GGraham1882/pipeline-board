@@ -37,6 +37,32 @@ function seedDemo() {
 const board = document.getElementById("board");
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
+// Rolling count-up for dollar totals. Remembers each element's last value so
+// re-renders animate from where they left off (and from $0 on first load).
+const prevSums = {};
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function animateMoney(el, from, to) {
+  if (reducedMotion.matches || from === to) {
+    el.textContent = money.format(to);
+    return;
+  }
+  const duration = 900;
+  const start = performance.now();
+  el.classList.add("counting");
+  function tick(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = money.format(Math.round(from + (to - from) * eased));
+    if (p < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      el.classList.remove("counting");
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
 function render() {
   board.innerHTML = "";
 
@@ -50,11 +76,19 @@ function render() {
 
     const head = document.createElement("div");
     head.className = "column-head";
-    head.innerHTML =
-      '<span class="column-title">' + stage +
-      ' <span class="count">' + inStage.length + "</span></span>" +
-      '<span class="column-sum">' + (sum ? money.format(sum) : "") + "</span>";
+    const title = document.createElement("span");
+    title.className = "column-title";
+    title.innerHTML = stage + ' <span class="count">' + inStage.length + "</span>";
+    const sumEl = document.createElement("span");
+    sumEl.className = "column-sum";
+    head.appendChild(title);
+    head.appendChild(sumEl);
     column.appendChild(head);
+
+    if (sum > 0) {
+      animateMoney(sumEl, prevSums[stage] || 0, sum);
+    }
+    prevSums[stage] = sum;
 
     if (inStage.length === 0) {
       const empty = document.createElement("p");
@@ -86,8 +120,12 @@ function render() {
   });
 
   const total = deals.reduce((t, d) => t + (Number(d.value) || 0), 0);
-  document.getElementById("pipelineTotal").innerHTML =
-    deals.length + " deals · <strong>" + money.format(total) + "</strong>";
+  const totalWrap = document.getElementById("pipelineTotal");
+  totalWrap.textContent = deals.length + " deals · ";
+  const totalEl = document.createElement("strong");
+  totalWrap.appendChild(totalEl);
+  animateMoney(totalEl, prevSums.__pipeline || 0, total);
+  prevSums.__pipeline = total;
 
   renderTicker(total);
 }

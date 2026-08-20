@@ -102,6 +102,13 @@ body {
 
 .pipeline-total strong { color: var(--gold-bright); font-weight: 600; }
 
+/* Gold glow while a total is counting up */
+
+.counting {
+  color: var(--gold-bright) !important;
+  text-shadow: 0 0 14px rgba(227, 191, 69, 0.55);
+}
+
 /* Buttons */
 
 .btn {
