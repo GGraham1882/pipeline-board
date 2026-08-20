@@ -88,6 +88,27 @@ function render() {
   const total = deals.reduce((t, d) => t + (Number(d.value) || 0), 0);
   document.getElementById("pipelineTotal").innerHTML =
     deals.length + " deals · <strong>" + money.format(total) + "</strong>";
+
+  renderTicker(total);
+}
+
+// Ticker tape across the top, quoted from the deals on the board.
+// Content is duplicated once so the scroll animation loops seamlessly.
+function renderTicker(total) {
+  const track = document.getElementById("tickerTrack");
+  const quotes = deals.map((d) => {
+    const sym = d.company.replace(/[^A-Za-z]/g, "").slice(0, 4).toUpperCase() || "DEAL";
+    // Deterministic direction per deal so the tape doesn't flicker on re-render
+    const up = (d.id + d.company).split("").reduce((a, c) => a + c.charCodeAt(0), 0) % 3 !== 0;
+    return (
+      '<span><span class="t-sym">' + sym + "</span> " +
+      money.format(Number(d.value) || 0) +
+      ' <span class="' + (up ? "t-up" : "t-down") + '">' + (up ? "▲" : "▼") + "</span></span>"
+    );
+  });
+  quotes.push('<span><span class="t-sym">PIPELINE</span> ' + money.format(total) + ' <span class="t-up">▲</span></span>');
+  const half = quotes.join("");
+  track.innerHTML = half + half;
 }
 
 function renderCard(deal) {

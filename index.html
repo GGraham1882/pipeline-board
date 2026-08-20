@@ -7,15 +7,19 @@
   <meta name="description" content="Pipeline: a lightweight sales deal tracker. Drag deals through your funnel; everything saves in your browser.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
   <header class="topbar">
     <div>
       <h1>Pipeline</h1>
-      <p class="tagline">A lightweight deal tracker. Your data stays in your browser.</p>
+      <p class="tagline">Sell me this pen.</p>
     </div>
     <div class="topbar-actions">
       <span class="pipeline-total" id="pipelineTotal"></span>
@@ -27,7 +31,7 @@
 
   <footer class="foot">
     <p>
-      Demo data is fictional.
+      Demo data is fictional. No yachts were purchased.
       <button class="linklike" id="resetBtn" type="button">Reset demo data</button>
     </p>
     <p>Built by <a href="https://grahamconnell.net">Graham Connell</a> with Claude Code ·
